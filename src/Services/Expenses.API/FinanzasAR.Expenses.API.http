@@ -1,0 +1,6 @@
+@FinanzasAR.Expenses.API_HostAddress = http://localhost:5216
+
+GET {{FinanzasAR.Expenses.API_HostAddress}}/health
+Accept: application/json
+
+###

@@ -1,0 +1,153 @@
+services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${SQL_PASSWORD}
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "${SQL_PASSWORD}" -C -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  identity-api:
+    build:
+      context: ..
+      dockerfile: src/Services/Identity.API/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=FinanzasAR_Identity;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  incomes-api:
+    build:
+      context: ..
+      dockerfile: src/Services/Incomes.API/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=FinanzasAR_Incomes;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  expenses-api:
+    build:
+      context: ..
+      dockerfile: src/Services/Expenses.API/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=FinanzasAR_Expenses;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  entities-api:
+    build:
+      context: ..
+      dockerfile: src/Services/Entities.API/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=FinanzasAR_Entities;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  monotributo-api:
+    build:
+      context: ..
+      dockerfile: src/Services/Monotributo.API/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=FinanzasAR_Monotributo;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+      Services__IncomesApi: http://incomes-api:8080
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      incomes-api:
+        condition: service_started
+
+  reports-api:
+    build:
+      context: ..
+      dockerfile: src/Services/Reports.API/Dockerfile
+    environment:
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+      Services__IncomesApi: http://incomes-api:8080
+      Services__MonotributoApi: http://monotributo-api:8080
+    depends_on:
+      incomes-api:
+        condition: service_started
+      monotributo-api:
+        condition: service_started
+
+  vencimientos-api:
+    build:
+      context: ..
+      dockerfile: src/Services/Vencimientos.API/Dockerfile
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=FinanzasAR_Vencimientos;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+      Google__ClientId: ${GOOGLE_CLIENT_ID}
+      Google__ClientSecret: ${GOOGLE_CLIENT_SECRET}
+      Google__RedirectUri: ${GOOGLE_REDIRECT_URI}
+      Gemini__ApiKey: ${GEMINI_API_KEY}
+      Encryption__Key: ${ENCRYPTION_KEY}
+      Frontend__Url: http://localhost:4200
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: src/Gateway/FinanzasAR.Gateway/Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      Jwt__Key: ${JWT_KEY}
+      Jwt__Issuer: FinanzasAR
+      Jwt__Audience: FinanzasAR
+      AllowedOrigins: http://localhost:4200
+    depends_on:
+      - identity-api
+      - incomes-api
+      - expenses-api
+      - entities-api
+      - monotributo-api
+      - reports-api
+      - vencimientos-api
+
+  frontend:
+    build:
+      context: ../frontend/finanzas-angular
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - gateway
+
+volumes:
+  sqlserver_data:

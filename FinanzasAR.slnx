@@ -1,0 +1,31 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Gateway/">
+    <Project Path="src/Gateway/FinanzasAR.Gateway/FinanzasAR.Gateway.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/Entities.API/">
+    <Project Path="src/Services/Entities.API/FinanzasAR.Entities.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/Expenses.API/">
+    <Project Path="src/Services/Expenses.API/FinanzasAR.Expenses.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/Identity.API/">
+    <Project Path="src/Services/Identity.API/FinanzasAR.Identity.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/Incomes.API/">
+    <Project Path="src/Services/Incomes.API/FinanzasAR.Incomes.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/Monotributo.API/">
+    <Project Path="src/Services/Monotributo.API/FinanzasAR.Monotributo.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/Reports.API/">
+    <Project Path="src/Services/Reports.API/FinanzasAR.Reports.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/Vencimientos.API/">
+    <Project Path="src/Services/Vencimientos.API/FinanzasAR.Vencimientos.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/FinanzasAR.SharedKernel/FinanzasAR.SharedKernel.csproj" />
+  </Folder>
+</Solution>

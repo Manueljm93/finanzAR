@@ -1,0 +1,6 @@
+@FinanzasAR.Identity.API_HostAddress = http://localhost:5147
+
+GET {{FinanzasAR.Identity.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

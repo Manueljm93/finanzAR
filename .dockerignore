@@ -1,0 +1,10 @@
+**/.vs
+**/bin
+**/obj
+**/.angular
+**/node_modules
+**/dist
+**/*.user
+infra/.env
+.git
+.gitignore

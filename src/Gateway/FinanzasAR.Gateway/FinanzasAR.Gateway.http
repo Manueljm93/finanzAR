@@ -1,0 +1,6 @@
+@FinanzasAR.Gateway_HostAddress = http://localhost:5230
+
+GET {{FinanzasAR.Gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

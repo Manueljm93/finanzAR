@@ -1,0 +1,80 @@
+:root {
+  --app-radius: 12px;
+  --app-shadow: 0 1px 3px rgba(0, 0, 0, .06), 0 1px 2px rgba(0, 0, 0, .04);
+  --app-shadow-md: 0 6px 18px rgba(0, 0, 0, .08);
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--surface-ground);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+.page-container {
+  padding: 1.75rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* --- Tarjetas: borde + sombra sutil, esquinas redondeadas --- */
+.p-card {
+  border-radius: var(--app-radius) !important;
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--app-shadow) !important;
+  transition: box-shadow .2s ease, border-color .2s ease, background-color .25s ease;
+}
+.p-card:hover { box-shadow: var(--app-shadow-md) !important; }
+.p-card .p-card-body { padding: 1.25rem 1.5rem; }
+.p-card .p-card-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; }
+
+/* --- Controles un toque más redondeados --- */
+.p-button { border-radius: 9px; font-weight: 500; }
+.p-inputtext,
+.p-dropdown,
+.p-calendar .p-inputtext,
+.p-inputnumber-input { border-radius: 9px; }
+
+/* --- Tablas más prolijas --- */
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--surface-50);
+  text-transform: uppercase;
+  font-size: .72rem;
+  letter-spacing: .04em;
+  color: var(--text-color-secondary);
+}
+
+/* --- Montos con signo (verde/rojo adaptados a cada modo) --- */
+.usd-amount,
+.amount-pos { color: #2e7d32; }
+.amount-neg { color: #c62828; }
+.dark .usd-amount,
+.dark .amount-pos { color: #69c779; }
+.dark .amount-neg { color: #ef5350; }
+
+/* --- Cajas de aviso con texto legible en ambos modos --- */
+.callout { border: 1px solid transparent; }
+.callout-warn    { background: #fff3cd; border-color: #ffe69c; color: #664d03; }
+.callout-danger  { background: #f8d7da; border-color: #f1aeb5; color: #842029; }
+.callout-success { background: #e8f5e9; border-color: #c8e6c9; color: #1b5e20; }
+.dark .callout-warn    { background: rgba(255, 193, 7, .14); border-color: rgba(255, 193, 7, .30); color: #ffd75e; }
+.dark .callout-danger  { background: rgba(239, 83, 80, .15); border-color: rgba(239, 83, 80, .32); color: #ff9d99; }
+.dark .callout-success { background: rgba(76, 175, 80, .15); border-color: rgba(76, 175, 80, .32); color: #8fdf98; }
+
+/* --- Filas resaltadas en la grilla de categorías (Monotributo) --- */
+.row-current > td   { background: #f1f3f5; }
+.row-projected > td { background: #d6eaff; }
+.dark .row-current > td   { background: rgba(255, 255, 255, .06); }
+.dark .row-projected > td { background: rgba(59, 130, 246, .22); }
+
+/* --- Scrollbar discreta --- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--surface-400); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--surface-500); }
+::-webkit-scrollbar-track { background: transparent; }

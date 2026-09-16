@@ -1,0 +1,6 @@
+@FinanzasAR.Monotributo.API_HostAddress = http://localhost:5206
+
+GET {{FinanzasAR.Monotributo.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

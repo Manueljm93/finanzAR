@@ -1,0 +1,19 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.swp
+
+## Docker env (contiene passwords)
+infra/.env
+
+## Angular
+frontend/finanzas-angular/node_modules/
+frontend/finanzas-angular/dist/
+frontend/finanzas-angular/.angular/
+
+## General
+.DS_Store
+Thumbs.db
